@@ -1,6 +1,4 @@
 
-#spring.security.user.name= ChamaraBandara
-#spring.security.user.password= Pwd1
 
 
 spring:
@@ -9,6 +7,10 @@ spring:
     url: jdbc:mysql://localhost:3306/cms_v1
     username : root
     password : Cham@wd1
+  security:
+    user:
+      name: root
+      password: Cham@wd1
   jpa:
     hibernate:
       ddl-auto : update

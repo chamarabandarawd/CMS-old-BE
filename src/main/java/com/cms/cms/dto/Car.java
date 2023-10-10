@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Cars {
+public class Car {
 
     private int carId;
     private String carNumber;
     private int passengerCount;
     private String gearSystem;
     private int fuelEfficiency;
+    private int duration;
 }
