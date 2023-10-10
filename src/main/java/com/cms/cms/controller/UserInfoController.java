@@ -5,8 +5,7 @@ import com.cms.cms.dto.AuthRequest;
 import com.cms.cms.servise.UserInfoService;
 import com.cms.cms.servise.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,9 @@ public class UserInfoController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/signUp")
     public String userCreate(@RequestBody UserInfo userInfo){
