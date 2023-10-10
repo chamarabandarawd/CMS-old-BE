@@ -33,6 +33,7 @@ public class SecurityConfig {
 //                .roles("USER")
 //                .build();
 //        return new InMemoryUserDetailsManager(admin,user);
+        return new UserInfoUserDetailsServiceImpl();
 
     }
 
