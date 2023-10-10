@@ -1,6 +1,7 @@
 package com.cms.cms.controller;
 
 import com.cms.cms.dao.UserInfo;
+import com.cms.cms.dto.AuthRequest;
 import com.cms.cms.servise.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -19,5 +20,11 @@ public class UserInfoController {
     @PostMapping("/signUp")
     public String userCreate(@RequestBody UserInfo userInfo){
         return userInfoService.addUser(userInfo);
+    }
+
+
+    @PostMapping("/authenticate")
+    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest){
+
     }
 }
