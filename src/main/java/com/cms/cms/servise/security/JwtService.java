@@ -7,14 +7,13 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class JwtService {
-    public static final String SECRETKEY ="5WLubZ2mX8PavniwWOqZSipxH1mdabQ1";
+    public static final String SECRETARY ="5WLubZ2mX8PavniwWOqZSipxH1mdabQ1";
 
     public String generateToken(String username){
         Map<String,Object> claims=new HashMap<>();
@@ -33,7 +32,7 @@ public class JwtService {
 
     private Key getSignKey() {
 
-        byte[] keyByte = Decoders.BASE64.decode(SECRETKEY);
+        byte[] keyByte = Decoders.BASE64.decode(SECRETARY);
 
         return Keys.hmacShaKeyFor(keyByte);
     }
