@@ -47,8 +47,8 @@ public class SecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("car/welcome").permitAll()
-                                .requestMatchers("car/**").authenticated()
+                        auth.requestMatchers("/car/welcome","/userInfo/**").permitAll()
+                                .requestMatchers("/car/**").authenticated()
         ).httpBasic(Customizer.withDefaults());
          return http.build();
     }
