@@ -2,6 +2,8 @@ package com.cms.cms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,17 +24,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
-//        UserDetails admin= User.withUsername("admin1")
-//                .password(encoder.encode("Pwd1"))
-//                .roles("ADMIN","USER")
-//                .build();
-//
-//        UserDetails user= User.withUsername("user1")
-//                .password(encoder.encode("Pwd1"))
-//                .roles("USER")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin,user);
+    public UserDetailsService userDetailsService(){
+
         return new UserInfoUserDetailsServiceImpl();
 
     }
@@ -51,6 +44,14 @@ public class SecurityConfig {
                                 .requestMatchers("/car/**").authenticated()
         ).httpBasic(Customizer.withDefaults());
          return http.build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
     }
 
 }
