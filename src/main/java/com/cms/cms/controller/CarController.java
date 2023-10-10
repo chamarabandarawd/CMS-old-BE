@@ -3,6 +3,7 @@ package com.cms.cms.controller;
 import com.cms.cms.dto.Car;
 import com.cms.cms.servise.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,13 @@ public class CarController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public List<Car> getAllCars(){
         return carService.getAllCars();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public Car getCarById(@PathVariable int id){
         return carService.getCarById(id);
     }
