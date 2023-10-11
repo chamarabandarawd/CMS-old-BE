@@ -4,7 +4,7 @@
 spring:
   datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cms_v1
+    url: jdbc:mysql://localhost:3306/cms_v3
     username : root
     password : Cham@wd1
 #  security:
