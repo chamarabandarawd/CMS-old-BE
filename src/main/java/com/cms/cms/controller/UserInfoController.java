@@ -3,6 +3,7 @@ package com.cms.cms.controller;
 import com.cms.cms.dao.RefreshToken;
 import com.cms.cms.dao.UserInfo;
 import com.cms.cms.dto.AuthRequest;
+import com.cms.cms.dto.JwtResponse;
 import com.cms.cms.servise.RefreshTokenService;
 import com.cms.cms.servise.UserInfoService;
 import com.cms.cms.servise.security.JwtService;
@@ -38,14 +39,17 @@ public class UserInfoController {
 
 
     @PostMapping("/login")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest){
+    public JwtResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest){
         Authentication authentication =authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));
 
 
         if(authentication.isAuthenticated()){
-            refreshTokenService.createRefreshToken(authRequest.getUsername())
-            return jwtService.generateToken(authRequest.getUsername());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequest.getUsername());
+            return JwtResponse.builder()
+                    .accessToken(jwtService.generateToken(authRequest.getUsername()))
+                    .token(refreshToken.getToken())
+                    .build();
         }else {
             throw new UsernameNotFoundException("Invalid user request !...");
         }
