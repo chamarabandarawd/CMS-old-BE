@@ -4,10 +4,12 @@ import com.cms.cms.dao.RefreshToken;
 import com.cms.cms.dao.UserInfo;
 import com.cms.cms.dto.AuthRequest;
 import com.cms.cms.dto.JwtResponse;
+import com.cms.cms.dto.RefreshTokenRequest;
 import com.cms.cms.servise.RefreshTokenService;
 import com.cms.cms.servise.UserInfoService;
 import com.cms.cms.servise.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,5 +55,19 @@ public class UserInfoController {
         }else {
             throw new UsernameNotFoundException("Invalid user request !...");
         }
+    }
+
+    @PostMapping("/refreshToken")
+    public JwtResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest){
+       return refreshTokenService.findByToken(refreshTokenRequest.getToken())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUserInfo)
+                .map(userInfo -> {
+                    String accessToken= jwtService.generateToken(userInfo.getUsername());
+                    return JwtResponse.builder()
+                            .accessToken(accessToken)
+                            .token(refreshTokenRequest.getToken()).build();
+                }).orElseThrow(()->new RuntimeException("Refresh token is not in database!.."));
+
     }
 }
