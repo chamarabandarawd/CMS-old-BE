@@ -1,7 +1,9 @@
 package com.cms.cms.controller;
 
+import com.cms.cms.dao.RefreshToken;
 import com.cms.cms.dao.UserInfo;
 import com.cms.cms.dto.AuthRequest;
+import com.cms.cms.servise.RefreshTokenService;
 import com.cms.cms.servise.UserInfoService;
 import com.cms.cms.servise.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class UserInfoController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
     @PostMapping("/signUp")
     public String userCreate(@RequestBody UserInfo userInfo){
         return userInfoService.addUser(userInfo);
@@ -37,7 +42,9 @@ public class UserInfoController {
         Authentication authentication =authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));
 
+
         if(authentication.isAuthenticated()){
+            refreshTokenService.createRefreshToken(authRequest.getUsername())
             return jwtService.generateToken(authRequest.getUsername());
         }else {
             throw new UsernameNotFoundException("Invalid user request !...");
